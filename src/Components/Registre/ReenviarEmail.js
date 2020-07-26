@@ -58,7 +58,7 @@ const ReenviarEmail = ({ visible, onCreate, onCancel, opcion }) => {
         }}
       >
         <Form.Item
-          name="Email"
+          name="email"
           label="Correo"
           rules={[
             {

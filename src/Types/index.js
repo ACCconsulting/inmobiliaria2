@@ -7,6 +7,8 @@ export const LIMPIAR = "LIMPIAR";
 export const USER_SUGGESTION = "USER_SUGGESTION";
 
 export const RESEND_EMAIL = "RESEND_EMAIL";
+export const RECOVERY_PAS_ERROR = "RECOVERY_PAS_ERROR";
+export const RECOVERY_PAS_SUCCESS = "RECOVERY_PAS_SUCCES";
 
 //Login
 export const LOGIN_BEGIN = "LOGIN_BEGIN";

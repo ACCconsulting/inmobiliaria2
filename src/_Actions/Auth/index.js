@@ -5,6 +5,9 @@ import {
   GET_USERINFO,
   CHANGE_PASSWORD,
   LOGON,
+  BEGIN,
+  RECOVERY_PAS_SUCCESS,
+  RECOVERY_PAS_ERROR,
 } from "../../Types";
 
 import clienteAxios from "../../Config/axios";
@@ -70,3 +73,91 @@ const changePassword = (error) => ({
   type: CHANGE_PASSWORD,
   payload: error,
 });
+
+export function RecoveryPassword(email) {
+  return async (dispatch) => {
+    dispatch(beginRecoveryPass());
+    try {
+      const response = await clienteAxios.post(
+        `api/User/RequestPasswordChange?email=${email.email}`
+      );
+
+      switch (response.data.Result) {
+        case "Ok":
+          dispatch(recoveryPassExito(response.data.Message));
+          break;
+        case "Validation":
+        case "Error":
+          dispatch(recoveryPassError(response.data.Message));
+          break;
+        case "NoData":
+          dispatch(
+            recoveryPassError(
+              "el correo que ingreso no esta vinculado a ninguna cuenta"
+            )
+          );
+          break;
+
+        default:
+          dispatch(
+            recoveryPassError("Ocurrio un error al intentar reenviar el correo")
+          );
+          break;
+      }
+    } catch (error) {
+      dispatch(
+        recoveryPassError("Ocurrio un error al intentar recuperar contraseña")
+      );
+    }
+  };
+}
+const beginRecoveryPass = () => ({
+  type: BEGIN,
+});
+const recoveryPassExito = (msj) => ({
+  type: RECOVERY_PAS_SUCCESS,
+  payload: msj,
+});
+const recoveryPassError = (msj) => ({
+  type: RECOVERY_PAS_ERROR,
+  payload: msj,
+});
+
+export function updateRecoveryPasswordAction(data) {
+  return async (dispatch) => {
+    dispatch(beginRecoveryPass());
+    try {
+      const response = await clienteAxios.post(
+        "api/User/ConfirmPasswordChange",
+        data
+      );
+
+      switch (response.data.Result) {
+        case "Ok":
+          dispatch(recoveryPassExito(response.data.Message));
+          break;
+        case "Validation":
+        case "Error":
+          dispatch(recoveryPassError(response.data.Message));
+          break;
+        case "NoData":
+          dispatch(
+            recoveryPassError(
+              "el correo que ingreso no esta vinculado a ninguna cuenta"
+            )
+          );
+          break;
+
+        default:
+          dispatch(
+            recoveryPassError("Ocurrio un error al intentar reenviar el correo")
+          );
+          break;
+      }
+    } catch (error) {
+      dispatch(
+        recoveryPassError("Ocurrio un error al intentar recuperar contraseña")
+      );
+    }
+  };
+}

@@ -4,10 +4,10 @@ import imgKey from "../../img/key.png";
 import { Link } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
 
-import { Form, Input, Button, Row, Col, Spin } from "antd";
+import { Form, Input, Button, Row, Col, Spin, Alert } from "antd";
 import { UserOutlined, LockOutlined } from "@ant-design/icons";
 
-import { Login } from "../../_Actions/Auth";
+import { Login, RecoveryPassword } from "../../_Actions/Auth";
 import AlertCustom from "../Helper/Alert";
 
 import ReenviarEmail from "../Registre/ReenviarEmail";
@@ -17,16 +17,34 @@ const LoginForm = (props) => {
 
   //Recuperar contraseña
   const [visible, setVisible] = useState(false);
+  //Metodo del aceptar modal
   const onCreate = (values) => {
+    console.log(values);
+    const Recovery = () => dispatch(RecoveryPassword(values));
+    Recovery();
+
     setVisible(false);
   };
+
+  const objUser = useSelector((state) => state.Auth);
+  const {
+    autenticado,
+    mensaje,
+    cargando,
+    firstTime,
+    mensajeRecovery,
+    recoveryPass,
+  } = objUser;
+
+  // useEffect(() => {
+  //   if (recoveryPass) {
+  //     setVisible(false);
+  //   }
+  // }, [mensajeRecovery]);
 
   // fin recuperar contraseña
 
   const inisiarSession = (usuario) => dispatch(Login(usuario));
-
-  const objUser = useSelector((state) => state.Auth);
-  const { autenticado, mensaje, cargando, firstTime } = objUser;
 
   useEffect(() => {
     if (autenticado) {
@@ -165,6 +183,17 @@ const LoginForm = (props) => {
           opcion="Recoveri"
         />
       </Row>
+
+      {recoveryPass ? (
+        <Row justify="center">
+          <Alert
+            className="AlertClass"
+            description={mensajeRecovery}
+            type="success"
+            showIcon
+          />
+        </Row>
+      ) : null}
     </Fragment>
   );
 };

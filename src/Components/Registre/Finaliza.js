@@ -33,10 +33,9 @@ const Finaliza = () => {
     reSendEmail();
   };
   const onFinish = () => {
-    // const clrearState = () => dispatch(ClearStateAction());
-    // clrearState();
-    history.push("/");
+  history.push("/");
     window.location.reload();
+     
   };
   let subtitle = `Enviamos un correo a la cuenta: ${Email} con los datos de acceso`;
   return (

@@ -1,10 +1,40 @@
-import React, { Fragment } from "react";
-import { Form, Input, Button, Row, Col, Spin } from "antd";
+import React, { Fragment,useEffect } from "react";
+import { Form, Input, Button, Row, Col, Spin, Alert } from "antd";
 import { UserOutlined, LockOutlined } from "@ant-design/icons";
 import imgReset from "../../img/reset.png";
 
-const RecoveryPassword = () => {
-  const onFinish = () => {};
+import { useDispatch, useSelector } from "react-redux";
+
+import { updateRecoveryPasswordAction } from "../../_Actions/Auth";
+import useNotification from "../Helper/Hooks/useNotification";
+
+
+
+const RecoveryPassword = (props) => {
+  const dispatch = useDispatch();
+  const { notificacion } = useNotification();
+
+  const objUser = useSelector((state) => state.Auth);
+  const { mensaje, cargando, mensajeRecovery, recoveryPass } = objUser;
+
+  useEffect(() => {
+   if(recoveryPass===true)
+   {
+     props.history.push("/");
+      notificacion("success", "Datos Actualziados", mensajeRecovery);
+   }
+  }, [recoveryPass]);
+
+
+  const onFinish = (values) => {
+    const objSendo = {
+      Password: values.Password,
+      Token: props.match.params.id,
+    };
+    const updateRecoveryPas = () => dispatch(updateRecoveryPasswordAction(objSendo));
+    updateRecoveryPas();
+    
+  };
   return (
     <Fragment>
       <Row justify="center">
@@ -12,7 +42,7 @@ const RecoveryPassword = () => {
       </Row>
       <Row justify="center">
         <Col>
-          <Spin spinning={false}>
+          <Spin spinning={cargando}>
             <Form
               name="normal_login"
               className="login-form"
@@ -21,7 +51,7 @@ const RecoveryPassword = () => {
               <Form.Item
                 label="Nuevo password"
                 style={{ display: "inline-block", width: "100%" }}
-                name="NewPassword"
+                name="Password"
                 rules={[{ required: true, message: "contraseña obligatoria" }]}
                 hasFeedback
               >
@@ -35,7 +65,7 @@ const RecoveryPassword = () => {
                 style={{ display: "inline-block", width: "100%" }}
                 name="confirm"
                 label="Confirm Password"
-                dependencies={["NewPassword"]}
+                dependencies={["Password"]}
                 hasFeedback
                 rules={[
                   {
@@ -44,7 +74,7 @@ const RecoveryPassword = () => {
                   },
                   ({ getFieldValue }) => ({
                     validator(rule, value) {
-                      if (!value || getFieldValue("NewPassword") === value) {
+                      if (!value || getFieldValue("Password") === value) {
                         return Promise.resolve();
                       }
 
@@ -69,14 +99,15 @@ const RecoveryPassword = () => {
                   Aceptar
                 </Button>
               </Form.Item>
-
-              {/* {mensaje ? (
-              <AlertCustom type="error" title="Error" description={mensaje} />
-            ) : null} */}
             </Form>
           </Spin>
         </Col>
       </Row>
+      {mensaje ? (
+        <Row justify="center">
+          <Alert description={mensaje} type="error" showIcon />
+        </Row>
+      ) : null}
     </Fragment>
   );
 };

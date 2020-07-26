@@ -22,3 +22,17 @@
   /* background: white; */
   color: white;
 }
+
+.AlertClass {
+  /* width: 80%; */
+  /* background-color: #d5233f; */
+  /* color: white; */
+  font-weight: bold;
+  border-radius: 10px;
+}
+.AlertClassMormal {
+  background-color: #d5233f;
+  color: white;
+  /* font-weight: bold; */
+  border-radius: 10px;
+}

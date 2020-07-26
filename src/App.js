@@ -63,7 +63,7 @@ function App() {
                 <Route exact path="/advisor/edit/:id" component={AdvisorEdit} />
                 <Route
                   exact
-                  path="/account/recovery/:id"
+                  path="/account/resetpassword/:id"
                   component={RecoveryPassword}
                 />
 

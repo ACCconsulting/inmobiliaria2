@@ -76,6 +76,10 @@ const Register2 = ({ props }) => {
     Advisor.Twitter = Twitter;
     Advisor.LastName1 = "NA";
     Advisor.LastName2 = "NA";
+if(company.MembershipCode===""){
+  company.MembershipCode = "000000";
+}
+  
 
     Account.Advisor = Advisor;
     Account.Company = company;
@@ -93,7 +97,7 @@ const Register2 = ({ props }) => {
     <Fragment>
       <Spin spinning={cargando}>
         <Form
-          {...layout}
+          // {...layout}
           name="Register2"
           className="login-form"
           initialValues={company}

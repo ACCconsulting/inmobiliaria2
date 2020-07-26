@@ -22,7 +22,7 @@ const Register1 = ({ props }) => {
   };
   return (
     <Form
-      {...layout}
+      // {...layout}
       name="Register1"
       className="login-form"
       initialValues={company}
@@ -79,7 +79,7 @@ const Register1 = ({ props }) => {
       </Form.Item>
       <Form.Item
         name="MembershipCode"
-        rules={[{ required: true, message: "El codigo es requerido" }]}
+        // rules={[{ required: true, message: "El codigo es requerido" }]}
       >
         <Input
           prefix={<CodeOutlined className="site-form-item-icon" />}
